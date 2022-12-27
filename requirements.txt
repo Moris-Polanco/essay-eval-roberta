@@ -1,4 +1,4 @@
 transformers
 streamlit
-Pytorch
+PyTorch
 protobuf
