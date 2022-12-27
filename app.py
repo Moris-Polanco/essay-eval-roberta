@@ -15,6 +15,9 @@ def process_essay(essay):
   # Generate a score for the essay using the model
   score = model(input_ids)[0]
   
+  # Squeeze the tensor to remove dimensions of size 1
+  score = score.squeeze()
+  
   # Extract the scalar value from the tensor and return it as a float
   return score.item()
 
