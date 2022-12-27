@@ -1,11 +1,11 @@
 import streamlit as st
 import transformers
 
-# Load the RoBERTa model
-model = transformers.RobertaModel.from_pretrained('roberta-base')
+# Load the BERT model
+model = transformers.BertModel.from_pretrained('bert-base-uncased')
 
 # Define a tokenizer for the model
-tokenizer = transformers.RobertaTokenizer.from_pretrained('roberta-base')
+tokenizer = transformers.BertTokenizer.from_pretrained('bert-base-uncased')
 
 # Create a function to process the input essay and generate a score
 def process_essay(essay):
@@ -14,9 +14,6 @@ def process_essay(essay):
   
   # Generate a score for the essay using the model
   score = model(input_ids)[0]
-  
-  # Squeeze the tensor to remove dimensions of size 1
-  score = score.squeeze()
   
   # Extract the scalar value from the tensor and return it as a float
   return score.item()
