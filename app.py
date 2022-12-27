@@ -1,34 +1,17 @@
-import streamlit as st
+import torch
 import transformers
 
-# Load the BERT model
-model = transformers.BertModel.from_pretrained('bert-base-uncased')
+# Cargar el modelo de Roberta
+model = transformers.RobertaModel.from_pretrained('roberta-base')
 
-# Define a tokenizer for the model
-tokenizer = transformers.BertTokenizer.from_pretrained('bert-base-uncased')
+# Escribir una función para utilizar el modelo
+def generate_response(input_text):
+  input_ids = torch.tensor(model.encode(input_text)).unsqueeze(0)
+  output = model.generate(input_ids)
+  response = model.decode(output[0], skip_special_tokens=True)
+  return response
 
-# Create a function to process the input essay and generate a score
-def process_essay(essay):
-  # Tokenize the input
-  input_ids = tokenizer.encode(essay, return_tensors='pt')
-  
-  # Generate a score for the essay using the model
-  score = model(input_ids)[0]
-  
-  # Extract the scalar value from the tensor and return it as a float
-  return score.item()
-
-# Create the main Streamlit app
-def main():
-  st.title('Essay Evaluator')
-  
-  # Get the essay input from the user
-  essay = st.text_area('Enter your essay:')
-  
-  # If the user has entered an essay, process it and display the score
-  if essay:
-    score = process_essay(essay)
-    st.write('Your essay has a score of', score)
-
-if __name__ == '__main__':
-  main()
+# Prueba de la función
+input_text = "Hola, ¿cómo estás?"
+response = generate_response(input_text)
+print(response)
